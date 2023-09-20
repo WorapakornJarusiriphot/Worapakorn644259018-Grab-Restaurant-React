@@ -66,3 +66,26 @@ input:focus{
   color: red;
   font-style: italic;
 }
+
+/* Styles for the Search component */
+.search-container {
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  color: rgb(0, 0, 0);
+  justify-content: center;
+  padding: 0px;
+}
+
+.search-input {
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.card {
+  margin: 1rem;
+}
+
+.search-input {
+  width: 100%;
+}

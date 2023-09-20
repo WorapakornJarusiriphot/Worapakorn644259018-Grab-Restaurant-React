@@ -13,7 +13,9 @@ const Card = ({ restaurant, handleDelete }) => {
           to=""
           className="btn btn-danger px-2 mx-1"
           onClick={() => {
-            handleDelete(restaurant.id);
+            if (window.confirm(`คุณจะลบร้านค้า ${restaurant.name} จริงๆหรอ`)) {
+                handleDelete(restaurant.id);
+            }
           }}
         >
           Delete
