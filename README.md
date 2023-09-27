@@ -1,6 +1,11 @@
 # Worapakorn644259018-Grab-Restaurant-React
  ชื่อ นายวรปกร จารุศิริพจน์ รหัสนักศึกษา644259018 หมู่เรียน64/45
 
+# ลิงค์สำหรับเข้า หน้าเว็บ ของเรา
+ [คลิกที่นี่เพื่อเข้าสู่ หน้าเว็บ ของเรา](https://main--capable-paletas-75de91.netlify.app/)
+ 
+[https://main--capable-paletas-75de91.netlify.app/](https://main--capable-paletas-75de91.netlify.app/)
+
 ## วิธีการใช้งานตัวเว็บ Grab Restaurant นี้
 
 ### 1. ถ้าเข้ามาในตัวเว็บของเราแล้วก็จะขึ้นตัวร้านอาหารทั้งหมดในหน้าแรก
