@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import AuthService from "../services/auth.service";
 
 const NavBar = () => {
+  const [user, setUser] = useState(AuthService.getCurrentUser());
   return (
     <nav className="navbar navbar-expand-lg bg-warning navbar-warning">
       <div className="container-fluid">
@@ -36,16 +38,27 @@ const NavBar = () => {
                 Search
               </Link>
             </li>
-            <li className="nav-item">
+            {!user && 
+            (<li className="nav-item">
               <Link className="nav-link" to="/signin">
                 SignIn
               </Link>
-            </li>
-            <li className="nav-item">
+            </li>)
+            }
+            {!user && 
+            (<li className="nav-item">
               <Link className="nav-link" to="/signup">
                 SignUp
               </Link>
-            </li>
+            </li>)
+            }
+            {user && 
+            (<li className="nav-item">
+              <Link className="nav-link" to="/logout">
+                Log Out
+              </Link>
+            </li>)
+            }
           </ul>
         </div>
       </div>

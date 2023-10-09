@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-const URL = import.meta.env.VITE_BASE_URL;
-const USERNAME = import.meta.env.VITE_BASE_USERNAME;
-const PASSWORD = import.meta.env.VITE_BASE_PASSWORD;
-const config = {
-  auth: {
-    username: USERNAME,
-    password: PASSWORD,
-  },
-};
+import AuthService from "../services/auth.service";
+
+// import axios from "axios";
+// const URL = import.meta.env.VITE_BASE_URL;
+// const USERNAME = import.meta.env.VITE_BASE_USERNAME;
+// const PASSWORD = import.meta.env.VITE_BASE_PASSWORD;
+// const config = {
+//   auth: {
+//     username: USERNAME,
+//     password: PASSWORD,
+//   },
+// };
 
 const SignUp = () => {
   const [user, setUser] = useState({
@@ -20,6 +22,7 @@ const SignUp = () => {
   });
   const navigate = useNavigate();
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState({message : ""});
   const handleChange = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -35,11 +38,24 @@ const SignUp = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      alert("Sign Up");
-      navigate("/signin");
+      if(user.confirmPassWord === user.password)
+      {
+        const register = await AuthService.register(
+          user.username , 
+          user.email ,
+          user.password
+          )
+        navigate("/signin")
+      } else {
+        setError(true);
+        setErrorMessage({message : "Failed! Password mismatched !"});
+      }
+      // alert("Sign Up");
+      // navigate("/signin");
     } catch (error) {
       console.error(error);
       setError(true);
+      setErrorMessage(error.response.data);
     }
   };
   return (
@@ -48,7 +64,7 @@ const SignUp = () => {
       <div className="row form">
         <div className="col-6 card justify-content-center">
           <h5 className="card-header">Register a new User</h5>
-          <div className="error">{error && "Somthing went wrong !!"}</div>
+          <div className="error">{error && errorMessage.message}</div>
           <div className="card-body">
             <form>
               <div className="form-group">

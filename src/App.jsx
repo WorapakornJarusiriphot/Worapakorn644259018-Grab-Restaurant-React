@@ -7,6 +7,7 @@ import Search from "./pages/Search";
 import Update from "./pages/Update";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import Logout from "./pages/Logout";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/update/:restaurantId" element={<Update />} />
         </Routes>
       </div>
