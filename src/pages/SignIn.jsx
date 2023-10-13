@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
+import { useAuthContext } from "../context/AuthContext";
 
 // import axios from "axios";
 // const URL = import.meta.env.VITE_BASE_URL;
@@ -12,13 +13,13 @@ import AuthService from "../services/auth.service";
 //     password: PASSWORD,
 //   },
 // };
-
 const SignIn = () => {
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
   const navigate = useNavigate();
+  const {login} = useAuthContext();
   const [error, setError] = useState(false);
   const handleChange = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -36,8 +37,9 @@ const SignIn = () => {
       //alert("Sign In");
       // await axios.post(`${URL}/restaurants`, restaurant, config);
       
-      const login = await AuthService.login(user.username, user.password);
-      navigate("/");
+      const currentUser = await AuthService.login(user.username, user.password);
+      login(currentUser);
+      navigate("/profile");
     } catch (error) {
       console.error(error);
       setError(true);

@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import AuthService from "../services/auth.service";
+import { useAuthContext } from "../context/AuthContext";
 
 const NavBar = () => {
-  const [user, setUser] = useState(AuthService.getCurrentUser());
+  const {user, logout} = useAuthContext();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout();
+    navigate("/SignIn");
+  }
+
+  //const [user, setUser] = useState(AuthService.getCurrentUser());
   return (
     <nav className="navbar navbar-expand-lg bg-warning navbar-warning">
       <div className="container-fluid">
@@ -28,11 +36,15 @@ const NavBar = () => {
                 Home
               </Link>
             </li>
+
+            {user && (
             <li className="nav-item">
               <Link className="nav-link" to="/add">
                 Add
               </Link>
             </li>
+            )}
+
             <li className="nav-item">
               <Link className="nav-link" to="/search">
                 Search
@@ -52,14 +64,28 @@ const NavBar = () => {
               </Link>
             </li>)
             }
-            {user && 
-            (<li className="nav-item">
-              <Link className="nav-link" to="/logout">
-                Log Out
-              </Link>
-            </li>)
-            }
           </ul>
+          {user && (
+          <div className="from-inline 
+          my-2 my-lg-0">
+              <span 
+              className="badge">
+                Welcome,{" "} 
+                <span 
+                className="mr-sm2 
+                h4">
+                  <Link 
+                  className="nav-link" 
+                  to={"/profile"}>{user.username}</Link>
+                </span>
+              </span>
+              <button 
+              className="btn btn-outline-danger my-2 my-sm-0" 
+              onClick={handleLogout}>
+                LogOut
+              </button>
+            </div>
+            )}
         </div>
       </div>
     </nav>
