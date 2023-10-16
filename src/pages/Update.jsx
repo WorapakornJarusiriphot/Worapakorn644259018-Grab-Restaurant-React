@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import authHeader from "../services/auth-header";
 import axios from "axios";
 const URL = import.meta.env.VITE_BASE_URL;
 const USERNAME = import.meta.env.VITE_BASE_USERNAME;
@@ -9,6 +10,7 @@ const config = {
     username: USERNAME,
     password: PASSWORD,
   },
+  headers: authHeader(),
 };
 
 const Update = () => {
@@ -94,7 +96,7 @@ const Update = () => {
               <Link to="" className="btn btn-success" onClick={handleClick}>
                 Update
               </Link>{" "}
-              <Link to="/" className="btn btn-danger" >
+              <Link to="/" className="btn btn-danger">
                 Cancel
               </Link>
             </form>

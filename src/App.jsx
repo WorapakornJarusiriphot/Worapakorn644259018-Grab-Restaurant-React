@@ -8,11 +8,11 @@ import Update from "./pages/Update";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Logout from "./pages/Logout";
-import Layout from "./components/Layout";
-import ProFile from "./pages/Profile";
+import Profile from "./pages/Profile";
+import NotAllow from "./pages/NotAllow";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import AdminRoute from "./pages/AdminRoute";
-import NotAllow from "./pages/NotAllow";
+import Layout from "./components/Layout";
 
 function App() {
   return (
@@ -20,24 +20,35 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Restaurant />} />
-          <Route path="add"element={
+          <Route
+            path="add"
+            element={
               <AdminRoute>
                 <Add />
               </AdminRoute>
-            } />
-
-          <Route path="search"
+            }
+          />
+          <Route
+            path="search"
             element={
               <ProtectedRoute>
                 <Search />
               </ProtectedRoute>
-            } />
+            }
+          />
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="logout" element={<Logout />} />
-          <Route path="profile" element={<ProFile />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="notallow" element={<NotAllow />} />
-          <Route path="update/:restaurantId" element={<Update />} />
+          <Route
+            path="update/:restaurantId"
+            element={
+              <AdminRoute>
+                <Update />
+              </AdminRoute>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>

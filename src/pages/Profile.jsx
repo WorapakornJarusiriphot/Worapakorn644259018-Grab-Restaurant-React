@@ -23,7 +23,7 @@ const ProFile = () => {
                                 <br />
                                 <b>Email:</b> {user.email}
                                 <br />
-                                <b>Roles:</b> ({user.roles.lenght})
+                                <b>Roles:</b> ({user.roles.length})
                                 <br />
                                 <ul>
                                     {user.roles && user.roles.map((role, index) => <li key={index}>{role}</li>)}

@@ -8,7 +8,7 @@ const NavBar = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
     logout();
-    navigate("/SignIn");
+    navigate("/signin");
   }
 
   //const [user, setUser] = useState(AuthService.getCurrentUser());
@@ -37,7 +37,7 @@ const NavBar = () => {
               </Link>
             </li>
 
-            {user && (
+            {user && user.roles.includes("ROLES_ADMIN") && (
             <li className="nav-item">
               <Link className="nav-link" to="/add">
                 Add
