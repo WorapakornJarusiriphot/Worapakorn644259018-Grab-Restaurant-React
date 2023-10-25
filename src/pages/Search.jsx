@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import Card from "../components/Card";
-import authHeader from "../services/auth-header";
+// import authHeader from "../services/auth-header";
+import api from "../services/api"
 
-const URL = import.meta.env.VITE_BASE_URL;
-const USERNAME = import.meta.env.VITE_BASE_USERNAME;
-const PASSWORD = import.meta.env.VITE_BASE_PASSWORD;
-const config = {
-  auth: {
-    username: USERNAME,
-    password: PASSWORD,
-  },
-  headers: authHeader(),
-};
+// const URL = import.meta.env.VITE_BASE_URL;
+// const USERNAME = import.meta.env.VITE_BASE_USERNAME;
+// const PASSWORD = import.meta.env.VITE_BASE_PASSWORD;
+// const config = {
+//   auth: {
+//     username: USERNAME,
+//     password: PASSWORD,
+//   },
+//   headers: authHeader(),
+// };
 
 const Search = () => {
   const [data, setData] = useState([]);
@@ -22,7 +23,7 @@ const Search = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`${URL}/restaurants`, config);
+      const res = await api.get(`/restaurants`);
       setData(res.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -36,7 +37,7 @@ const Search = () => {
   
 const handleDelete = async (id) => {
   try {
-    await axios.delete(`${URL}/restaurants/${id}`, config);
+    await api.delete(`/restaurants/${id}`);
     fetchData();
   } catch (error) {
     console.error("Error deleting restaurant:", error);
