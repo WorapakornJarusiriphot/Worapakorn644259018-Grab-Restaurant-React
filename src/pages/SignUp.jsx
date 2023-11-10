@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
+import Loading from "../components/Loading";
+import * as loadingData from "../loading/SignUp.json"
+import Swal from 'sweetalert2'
 
 // import axios from "axios";
 // const URL = import.meta.env.VITE_BASE_URL;
@@ -20,9 +23,10 @@ const SignUp = () => {
     password: "",
     confirmPassWord: "",
   });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState({message : ""});
+  const [errorMessage, setErrorMessage] = useState({ message: "" });
   const handleChange = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -37,30 +41,34 @@ const SignUp = () => {
   };
   const handleClick = async (e) => {
     e.preventDefault();
+    setLoading(true);  // Start loading before the try-catch block
     try {
-      if(user.confirmPassWord === user.password)
-      {
+      if (user.confirmPassWord === user.password) {
         const register = await AuthService.register(
-          user.username , 
-          user.email ,
+          user.username,
+          user.email,
           user.password
-          )
+        )
         navigate("/signin")
       } else {
         setError(true);
-        setErrorMessage({message : "Failed! Password mismatched !"});
+        setErrorMessage({ message: "Failed! Password mismatched !" });
       }
       // alert("Sign Up");
       // navigate("/signin");
+      setLoading(false);
     } catch (error) {
       console.error(error);
       setError(true);
       setErrorMessage(error.response.data);
     }
+    setLoading(false); // Stop loading after the try-catch block is done
   };
   return (
     <div className="container">
       <h1>Grab Restaurant</h1>
+      {
+      !loading ? (
       <div className="row form">
         <div className="col-6 card justify-content-center">
           <h5 className="card-header">Register a new User</h5>
@@ -112,7 +120,7 @@ const SignUp = () => {
                 />
               </div>
               <Link to="" className="btn btn-success" onClick={handleClick}>
-                Sig Up
+                Sign Up
               </Link>{" "}
               <Link to="/" className="btn btn-danger" onClick={handleClear}>
                 Cancle
@@ -121,6 +129,11 @@ const SignUp = () => {
           </div>
         </div>
       </div>
+      ) : (
+        // <Loading animation={loadingData}/>
+        <Loading animation={{ ...loadingData }} />
+      )
+    }
     </div>
   );
 };

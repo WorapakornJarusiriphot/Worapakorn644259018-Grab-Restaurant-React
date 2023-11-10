@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../services/api"
+import Loading from "../components/Loading";
+import * as loadingData from "../loading/Update.json"
+import Swal from 'sweetalert2'
 
 // import authHeader from "../services/auth-header";
 // import axios from "axios";
@@ -21,6 +24,7 @@ const Update = () => {
     type: "",
     imageURL: "",
   });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const { restaurantId } = useParams();
@@ -28,31 +32,40 @@ const Update = () => {
     setRestaurant((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   useEffect(() => {
+    setLoading(true);  // Start loading before the try-catch block
     const fetchAllRestaurant = async () => {
       try {
         const res = await api.get(`/restaurants/${restaurantId}`);
         setRestaurant(res.data);
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
+      setLoading(false); // Stop loading after the try-catch block is done
     };
     fetchAllRestaurant();
   }, [restaurantId]);
 
   const handleClick = async (e) => {
     e.preventDefault();
+    setLoading(true);  // Start loading before the try-catch block
     try {
       await api.put(`/restaurants/${restaurantId}`, restaurant);
       navigate("/");
+      setLoading(false);
     } catch (error) {
       console.error(error);
       setError(true);
     }
+    setLoading(false); // Stop loading after the try-catch block is done
   };
 
   return (
     <div className="container">
       <h1>Grab Restaurant</h1>
+
+      {
+                !loading ? (
       <div className="row form">
         <div className="col-6 card justify-content-center">
           <h5 className="card-header">Update restaurant</h5>
@@ -102,6 +115,11 @@ const Update = () => {
           </div>
         </div>
       </div>
+                      ) : (
+                        // <Loading animation={loadingData}/>
+                        <Loading animation={{ ...loadingData }} />
+                      )
+                    }
     </div>
   );
 };

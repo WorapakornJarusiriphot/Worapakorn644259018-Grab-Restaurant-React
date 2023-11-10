@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom"
 // import axios from "axios"
 import api from "../services/api"
 // import authHeader from "../services/auth-header";
+import Loading from "../components/Loading";
+import * as loadingData from "../loading/Add.json"
+import Swal from 'sweetalert2'
 
 // const URL = import.meta.env.VITE_BASE_URL;
 // const USERNAME = import.meta.env.VITE_BASE_USERNAME;
@@ -22,6 +25,7 @@ const Add = () => {
     type: "",
     imageURL: ""
   })
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState(false);
 
@@ -31,13 +35,16 @@ const Add = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
+    setLoading(true);  // Start loading before the try-catch block
     try {
       await api.post(`/restaurants`, restaurant);
       navigate("/")
+      setLoading(false);
     } catch (error) {
       console.error(error);
       setError(true);
     }
+    setLoading(false); // Stop loading after the try-catch block is done
   }
   const handleClear = (e) => {
     setRestaurant({
@@ -50,6 +57,9 @@ const Add = () => {
   return (
     <div className="container">
       <h1>Grab Restaurant</h1>
+
+      {
+                !loading ? (
       <div className="row form">
         <div className="col-6 card justify-content-center">
           <h5 className="card-header">Add new restaurant</h5>
@@ -99,6 +109,11 @@ const Add = () => {
           </div>
         </div>
       </div>
+                      ) : (
+                        // <Loading animation={loadingData}/>
+                        <Loading animation={{ ...loadingData }} />
+                      )
+                    }
     </div>
   );
 };

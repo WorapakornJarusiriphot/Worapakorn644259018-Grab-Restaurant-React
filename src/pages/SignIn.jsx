@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import { useAuthContext } from "../context/AuthContext";
+import Loading from "../components/Loading";
+import * as loadingData from "../loading/signIn.json"
+import Swal from 'sweetalert2'
 
 // import axios from "axios";
 // const URL = import.meta.env.VITE_BASE_URL;
@@ -18,8 +21,9 @@ const SignIn = () => {
     username: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const {login} = useAuthContext();
+  const { login } = useAuthContext();
   const [error, setError] = useState(false);
   const handleChange = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -33,21 +37,27 @@ const SignIn = () => {
   };
   const handleClick = async (e) => {
     e.preventDefault();
+    setLoading(true);  // Start loading before the try-catch block
     try {
       //alert("Sign In");
       // await axios.post(`${URL}/restaurants`, restaurant, config);
-      
+
       const currentUser = await AuthService.login(user.username, user.password);
       login(currentUser);
       navigate("/profile");
+      setLoading(false);
     } catch (error) {
       console.error(error);
       setError(true);
     }
+    setLoading(false); // Stop loading after the try-catch block is done
   };
   return (
     <div className="container">
       <h1>Grab Restaurant</h1>
+      {/* <Loading animation={{ ...loadingData }} /> */}
+      {
+        !loading ? (
       <div className="row form">
         <div className="col-6 card justify-content-center">
           <h5 className="card-header">Sign In</h5>
@@ -77,7 +87,7 @@ const SignIn = () => {
                 />
               </div>
               <Link to="" className="btn btn-success" onClick={handleClick}>
-                Sig In
+                Sign In
               </Link>{" "}
               <Link to="/" className="btn btn-danger" onClick={handleClear}>
                 Cancle
@@ -86,6 +96,11 @@ const SignIn = () => {
           </div>
         </div>
       </div>
+                      ) : (
+                        // <Loading animation={loadingData}/>
+                        <Loading animation={{ ...loadingData }} />
+                      )
+                    }
     </div>
   );
 };
